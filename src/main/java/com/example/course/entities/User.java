@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name = "tb_user")
@@ -29,6 +31,8 @@ public class User implements Serializable {
 	private String password;
 	
 	/////um usuario pode ter várias ordens e criação chave estrangeira
+	//// anotacao do jackson jsonIgnore para evitar associação de mão dupla, pois tambem existe associacao no order com user
+	@JsonIgnore
 	@OneToMany(mappedBy= "client")
 	private List<Order> orders = new ArrayList<>(); 
 	

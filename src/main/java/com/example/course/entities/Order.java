@@ -12,6 +12,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.example.course.entities.enums.OrderStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 @Table(name = "tb_order")
 public class Order implements Serializable {
@@ -20,7 +23,13 @@ public class Order implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone="GMT")
 	private Instant moment;
+	
+	/////private OrderStatus orderStatus;
+	private Integer orderStatus;
+
 	
 	//// uma ordem tem um cliente e criação chave estrangeira
 	@ManyToOne
@@ -32,10 +41,12 @@ public class Order implements Serializable {
     	
     }
 
-	public Order(Long id, Instant moment, User client) {
+	public Order(Long id, Instant moment,OrderStatus orderStatus, User client) {
 		super();
 		this.id = id;
 		this.moment = moment;
+		/////this.orderStatus = orderStatus; alterado devido OrderStatus passar um codigo inteiro
+		setOrderStatus(orderStatus);
 		this.client = client;
 	}
 
@@ -78,6 +89,18 @@ public class Order implements Serializable {
 			return false;
 		Order other = (Order) obj;
 		return Objects.equals(id, other.id);
+	}
+
+	public OrderStatus getOrderStatus() {
+		///return orderStatus; refeito abaixo devido classe orderStatus passar um codigo inteiro
+		return OrderStatus.valueOf(orderStatus);
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		////this.orderStatus = orderStatus; refeito abaixo devido classe orderStatus passar um codigo inteiro
+		if (orderStatus != null) {
+		   this.orderStatus = orderStatus.getCode();
+		}
 	}
     
     
