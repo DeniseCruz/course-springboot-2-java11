@@ -18,7 +18,7 @@ import com.example.course.services.UserService;
 public class UserResource {
 
 	@Autowired
-	private UserService service;
+	private UserService service; ////user service tem q estar registrada como comp. do spring
 	
 	@GetMapping
 	 public ResponseEntity<List<User>> findAll(){
