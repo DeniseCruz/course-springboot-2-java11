@@ -1,13 +1,18 @@
 package com.example.course.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /////mapeamentos JPA
 @Entity
@@ -18,7 +23,17 @@ public class Category implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+
+
 	private String name;
+	
+	/// lista feito com SET conjunto, produto com mais de uma mesma categoria. inicia vazia
+	//impede que o JPA interprete e dê erro devido ter relacionado do lado product e categoria
+	///@Transient
+	///jsonIgnore para evitar loop infinito 
+	@JsonIgnore
+	@ManyToMany(mappedBy = "categories")
+	private Set<Product> products = new HashSet<>();
 	
 	public Category() {
 		
@@ -30,6 +45,11 @@ public class Category implements Serializable {
 		this.name = name;
 	}
 
+	
+	public Set<Product> getProducts() {
+		return products;
+	}
+	
 	public Long getId() {
 		return id;
 	}
