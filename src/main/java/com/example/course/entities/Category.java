@@ -30,7 +30,7 @@ public class Category implements Serializable {
 	/// lista feito com SET conjunto, produto com mais de uma mesma categoria. inicia vazia
 	//impede que o JPA interprete e dê erro devido ter relacionado do lado product e categoria
 	///@Transient
-	///jsonIgnore para evitar loop infinito 
+	///jsonIgnore para evitar loop infinito devido product tambem ter manytomany
 	@JsonIgnore
 	@ManyToMany(mappedBy = "categories")
 	private Set<Product> products = new HashSet<>();
